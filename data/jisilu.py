@@ -2,6 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from pandas import DataFrame
 
 """
 # 集思录可转债数据查询地址
@@ -50,19 +51,19 @@ def readRow(tr):
     res.append(tr.select('.el-table_1_column_14 span'))
     # 每股配售（元）
     res.append(tr.select('.el-table_1_column_15 div'))
-    # 配售10张所需股数 （股）
+    # 配售10张所需股数（股）
     res.append(tr.select('.el-table_1_column_16 span'))
     # 股权登记日
     res.append(tr.select('.el-table_1_column_17 div'))
-    # 网上规模 （亿元）
+    # 网上规模（亿元）
     res.append(tr.select('.el-table_1_column_18 div'))
     # 中签率
     res.append(tr.select('.el-table_1_column_19 div'))
     # 单账户中签（顶格）
     res.append(tr.select('.el-table_1_column_20 div'))
-    # 申购户数 （万户）
+    # 申购户数（万户）
     res.append(tr.select('.el-table_1_column_21 span'))
-    # 网下顶格 （亿元）
+    # 网下顶格（亿元）
     res.append(tr.select('.el-table_1_column_22 div'))
     # 顶格获配（万元）
     res.append(tr.select('.el-table_1_column_23 div'))
@@ -78,7 +79,7 @@ def readCol1(col):
 
 readCol2 = readCol1
 def readCol3(col):
-    return col[0].div['title']
+    return col[0].div['title'].replace(' ','')
 
 def readCol4(col):
     return col[0].string
@@ -100,9 +101,14 @@ def readCol(tr):
 
 trs = soup.select('tbody tr')
 tbody = []
+tbody.append(['证券代码','证券名称','方案进展','上市公告日期','发行规模（亿元）','证券类型','评级',\
+                     '股东配售率','转股价','正股价','正股涨幅','正股现价比转股价','正股pb','百元股票含权（元）',\
+                     '每股配售（元）','配售10张所需股数（股）','股权登记日','网上规模（亿元）','中签率',\
+                     '单账户中签（顶格）','申购户数（万户）','网下顶格（亿元）','顶格获配（万元）','网下户数（户）','包销比例'])
 for tr in trs:
     row = readRow(tr)
     tbody.append(readCol(row))
 
-
+df = DataFrame(tbody)
+df.to_excel('/Users/tanghulux/Programs/pythonProjects/ConvertibleBonds/data/jisilu.xlsx')
 
