@@ -16,8 +16,6 @@ except IOError as argument:
     print(argument)
     exit(1)
 
-trs = soup.select('tbody tr')
-
 # 读取一行
 def readRow(tr):
     #
@@ -75,12 +73,36 @@ def readRow(tr):
 
     return res
 
-i = 0
+def readCol1(col):
+    return col[0].string, col[1].string
+
+readCol2 = readCol1
+def readCol3(col):
+    return col[0].div['title']
+
+def readCol4(col):
+    return col[0].string
+
+coldict = {
+    1: readCol1,
+    2: readCol2,
+    3: readCol3,
+    4: readCol4,
+}
+def getCol(idx, col):
+    fun = coldict.get(idx, readCol4)
+    return fun(col)
+def readCol(tr):
+    res = []
+    for idx, col in enumerate(tr):
+        res.append(getCol(idx+1, col))
+    return res
+
+trs = soup.select('tbody tr')
+tbody = []
 for tr in trs:
-    #
-    res = readRow(tr)
-    for j in res:
-        print(j)
-    if i == 0:
-        break
+    row = readRow(tr)
+    tbody.append(readCol(row))
+
+
 
