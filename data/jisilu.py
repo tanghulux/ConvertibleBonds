@@ -102,14 +102,14 @@ def readCol(tr):
 
 trs = soup.select('tbody tr')
 tbody = []
-tbody.append(['证券代码','证券名称','方案进展','上市公告日期','发行规模（亿元）','证券类型','评级',\
+header = ['证券代码','证券名称','方案进展','上市公告日期','发行规模（亿元）','证券类型','评级',\
                      '股东配售率','转股价','正股价','正股涨幅','正股现价比转股价','正股pb','百元股票含权（元）',\
                      '每股配售（元）','配售10张所需股数（股）','股权登记日','网上规模（亿元）','中签率',\
-                     '单账户中签（顶格）','申购户数（万户）','网下顶格（亿元）','顶格获配（万元）','网下户数（户）','包销比例'])
+                     '单账户中签（顶格）','申购户数（万户）','网下顶格（亿元）','顶格获配（万元）','网下户数（户）','包销比例']
 for tr in trs:
     row = readRow(tr)
     tbody.append(readCol(row))
 
-df = DataFrame(tbody)
-df.to_excel(current_path + '/jisilu2.xlsx')
+df = DataFrame(tbody, columns=header)
+df.to_excel(current_path + '/jisilu2.xlsx', index=False)
 
