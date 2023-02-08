@@ -41,8 +41,10 @@ for idx, row in df.iterrows():
     listing_date = row['上市公告日期']
     # 可转债配售股权登记日
     registration = row['股权登记日']
-    #print(ticker, name, listing_date, registration)
+    #print(symbol, name, listing_date, registration)
     cb = ak.bond_zh_hs_cov_daily(exchange(symbol[1])+symbol[1])
+    # 数据库每行记录多添加两个字段，一个正股代码，一个可转债代码
+    cb.insert(0, 'stock', symbol[0], allow_duplicates=True)
     cb.insert(0,'symbol',symbol[1],allow_duplicates=True)
     cb_price = pd.concat([cb_price, cb], ignore_index=True)
     i += 1
