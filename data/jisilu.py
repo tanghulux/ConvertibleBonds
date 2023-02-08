@@ -3,15 +3,16 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from pandas import DataFrame
+import os
 
 """
 # 集思录可转债数据查询地址
 r = requests.get('https://www.jisilu.cn/web/data/cb/pre')
 print(r.text)
 """
-
+current_path = os.path.dirname(__file__)
 try:
-    with open('/Users/tanghulux/Programs/pythonProjects/ConvertibleBonds/data/jisilu.html', 'r') as f:
+    with open(current_path + '/jisilu.html', 'r') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 except IOError as argument:
     print(argument)
@@ -110,5 +111,5 @@ for tr in trs:
     tbody.append(readCol(row))
 
 df = DataFrame(tbody)
-df.to_excel('/Users/tanghulux/Programs/pythonProjects/ConvertibleBonds/data/jisilu.xlsx')
+df.to_excel(current_path + '/jisilu2.xlsx')
 
