@@ -38,9 +38,6 @@ for idx, row in df.iterrows():
     t_end = (registr + datetime.timedelta(days=30)).strftime("%Y%m%d")
     #print(t_start, t_end)
     stock = ak.stock_zh_a_hist(symbol=symbol[0], start_date=t_start, end_date=t_end)
-    if(stock.empty):
-        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        print(symbol[0])
     stock.drop(stock.columns[6:], axis=1, inplace=True)
     stock.columns = ['date', 'open', 'close', 'high', 'low', 'volume']
     stock.insert(0, 'symbol', symbol[0], allow_duplicates=True)
